@@ -23,6 +23,7 @@ import globalFunctionConfigs from './configs/globalFunctionConfigs/globalFunctio
 import BootstrapVue from 'bootstrap-vue'
 
 
+
 Vue.config.productionTip = false
 
 Vue.use(Router)

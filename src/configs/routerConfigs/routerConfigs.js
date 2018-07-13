@@ -8,8 +8,23 @@ root.routes = []
 
 root.routes.push({
   path: '/',
-  name: 'HelloWorld',
-  component: resolve => require(['@/components/vue/HelloWorld'], resolve)
+  caseSensitive: true,
+  component: resolve => require(['@/components/vue/Index.vue'], resolve),
+  children: [
+    {
+      path: '',
+      redirect: 'tradingHall',
+      caseSensitive: true,
+      meta: {},
+    },
+    {
+      path: 'tradingHall',
+      name: 'tradingHall',
+      meta: {},
+      caseSensitive: true,
+      component: resolve => require(['@/components/vue/TradingHall'], resolve)
+    },
+  ]
 })
 
 

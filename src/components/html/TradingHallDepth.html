@@ -1,0 +1,24 @@
+<div class="col border text-nowrap">
+  <div class="row depth-title">
+    <div class="col-4 ">价格</div>
+    <div class="col-4 text-right number">数量</div>
+    <div class="col-4 text-right">成交额</div>
+  </div>
+  <div class="row  depth-detail" v-for="n in 10">
+    <div class="col-4">123</div>
+    <div class="col-4 text-right number">123</div>
+    <div class="col-4 text-right">123</div>
+    <div class="depth-background" :style="{'left':n + '%'}"></div>
+  </div>
+  <div class="row depth-title">
+    <div class="col text-center">
+      时价
+    </div>
+  </div>
+  <div class="row depth-detail" v-for="n in 10">
+    <div class="col-4">123</div>
+    <div class="col-4 text-right number">123</div>
+    <div class="col-4 text-right">123</div>
+    <div class="depth-background" :style="{'left':n + '%'}"></div>
+  </div>
+</div>
