@@ -12,10 +12,10 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/apis': {
-        target: '',
+        target: 'https://api.btcdo.com',
         changeOrigin: true,
         pathRewrite: {
-          // '^/apis': ''
+          '^/apis': ''
         }
       },
     },

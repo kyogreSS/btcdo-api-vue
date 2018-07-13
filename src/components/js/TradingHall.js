@@ -6,5 +6,11 @@ root.components = {
   'TradingHallDepth': resolve => require(['../vue/TradingHallDepth'], resolve),
 }
 
+root.created = function () {
+  this.$http.send('GET_CURRENCY').then(({data}) => {
+    console.warn('data', data)
+  })
+
+}
 
 export default root

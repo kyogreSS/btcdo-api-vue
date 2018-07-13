@@ -18,8 +18,8 @@
 .depth-background {
   position: absolute;
   background: blue;
-  top: 0;
-  bottom: 0;
+  top: 1px;
+  bottom: 1px;
   left: 12%;
   right: 0;
   opacity: 0.2;
