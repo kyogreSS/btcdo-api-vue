@@ -5,8 +5,10 @@ export default class {
 
   }
 
-  getAccounts() {
-    return httpMethod('key')
+  getAccounts({params, apiKey, secretKey, query} = {}) {
+    return httpMethod('GET_ACCOUNTS', {params, apiKey, secretKey, query})
   }
+
+
 
 }

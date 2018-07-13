@@ -7,9 +7,6 @@ root.components = {
 }
 
 root.created = function () {
-  this.$http.send('GET_CURRENCY').then(({data}) => {
-    console.warn('data', data)
-  })
 
 }
 
