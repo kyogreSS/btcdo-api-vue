@@ -20,6 +20,7 @@ import languageConfigs from './configs/languageConfigs/languageConfigs'
 import Global from 'vue-global-function'
 import VueI18n from 'vue-i18n'
 import globalFunctionConfigs from './configs/globalFunctionConfigs/globalFunctionConfigs'
+import BootstrapVue from 'bootstrap-vue'
 
 
 Vue.config.productionTip = false
@@ -31,6 +32,7 @@ Vue.use(EventBus)
 Vue.use(Socket, {url: socketConfigs.url, options: socketConfigs.options})
 Vue.use(VueI18n)
 Vue.use(Global, globalFunctionConfigs)
+Vue.use(BootstrapVue)
 
 
 const router = new Router(RouterConfigs)

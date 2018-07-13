@@ -11,10 +11,12 @@
       this.$eventBus.listen(this, 'TEST', (info) => {
         console.warn('测试eventBus', info)
       })
-      console.warn('this is i18n ', this.$t)
     }
   }
 </script>
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 <style>
   #app {
