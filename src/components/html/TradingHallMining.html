@@ -1,0 +1,43 @@
+<div class="row ">
+  <div class="col">
+    <div class="row border">
+      <div class="col">
+        <b-row class="my-1">
+          <b-col sm="3"><label for="input-api-key">api key:</label></b-col>
+          <b-col sm="9">
+            <b-form-input id="input-api-key" type="text" placeholder="Enter your api key"></b-form-input>
+          </b-col>
+        </b-row>
+        <b-row class="my-2">
+          <b-col sm="3"><label for="input-secret-key">secret key:</label></b-col>
+          <b-col sm="9">
+            <b-form-input id="input-secret-key" type="text" placeholder="Enter your secret key"></b-form-input>
+          </b-col>
+        </b-row>
+      </div>
+    </div>
+
+    <div class="row border">
+      <div class="col">
+        <b-form-group horizontal
+                      :label-cols="2"
+                      label="价格："
+                      label-for="input_default">
+          <b-form-input id="input_price"></b-form-input>
+        </b-form-group>
+
+        <b-form-group horizontal
+                      :label-cols="2"
+                      label="数量："
+                      label-for="input_default">
+          <b-form-input id="input_amount"></b-form-input>
+        </b-form-group>
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+</div>

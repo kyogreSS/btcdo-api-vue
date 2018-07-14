@@ -4,6 +4,7 @@ root.name = 'TradingHall'
 root.components = {
   'TradingHallHeader': resolve => require(['../vue/TradingHallHeader'], resolve),
   'TradingHallDepth': resolve => require(['../vue/TradingHallDepth'], resolve),
+  'TradingHallMining': resolve => require(['../vue/TradingHallMining'], resolve),
 }
 
 root.created = function () {
