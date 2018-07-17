@@ -11,7 +11,46 @@
     <div class="col-6">
       <TradingHallMining/>
     </div>
-    <div class="col-3"></div>
+    <div class="col-3">
+      <div role="tablist">
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-btn block href="#" v-b-toggle.accordion1 variant="info">
+              市场
+            </b-btn>
+          </b-card-header>
+          <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <TradeHallMarket/>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-btn block href="#" v-b-toggle.accordion2 variant="info">
+              账户信息
+            </b-btn>
+          </b-card-header>
+          <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <TradeHallAccounts/>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-btn block href="#" v-b-toggle.accordion3 variant="info">
+              最新成交
+            </b-btn>
+          </b-card-header>
+          <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <TradeHallLatestDeal/>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+      </div>
+    </div>
   </div>
 
 </div>
