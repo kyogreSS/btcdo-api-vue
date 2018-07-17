@@ -22,7 +22,7 @@ import VueI18n from 'vue-i18n'
 import globalFunctionConfigs from './configs/globalFunctionConfigs/globalFunctionConfigs'
 import BootstrapVue from 'bootstrap-vue'
 import CommonMethod from './utils/commonMethodInstaller'
-
+import VueCookies from 'vue-cookies'
 
 Vue.config.productionTip = false
 
@@ -35,6 +35,7 @@ Vue.use(VueI18n)
 Vue.use(Global, globalFunctionConfigs)
 Vue.use(BootstrapVue)
 Vue.use(CommonMethod)
+Vue.use(VueCookies)
 
 
 const router = new Router(RouterConfigs)
@@ -42,12 +43,18 @@ const store = new Vuex.Store(StoreConfigs)
 const i18n = new VueI18n(languageConfigs)
 
 
+// name filter 下划线变成斜杠
+Vue.filter('symbolName', function (value) {
+  return value.replace('_', '/');
+})
+
+
 NetworkInterceptors(Vue.$http.getAxios(), Vue.$http)
 
 
 // 异步加载，等待预先处理结束再挂载组件
 async function mountApp() {
-  await preHandler()
+  await preHandler(Vue.$api, store, Vue.cookies)
   new Vue({
     el: '#app',
     router,

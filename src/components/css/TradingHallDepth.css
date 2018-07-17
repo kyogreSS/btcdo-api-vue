@@ -1,18 +1,36 @@
-.number {
-  padding-right: 20px;
-}
 
 .depth-detail {
   font-size: 12px;
-  padding-top: 3px;
-  padding-bottom: 3px;
   position: relative;
+  height: 26px;
+  line-height: 26px;
+}
+
+.sale-container {
+  display: flex;
+  flex-direction: column-reverse;
+  min-height: 312px;
+}
+
+.buy-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 312px;
+
+}
+
+.depth-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .depth-title {
   font-size: 14px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .depth-background {

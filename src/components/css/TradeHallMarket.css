@@ -1,0 +1,61 @@
+.market-container {
+  /*height: 300px;*/
+  /*overflow: scroll;*/
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-item {
+  /*padding: 0 5px;*/
+  padding-right: 10px;
+  justify-content: space-between;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.active-nav-item {
+  color: #54ceed;
+
+}
+
+.symbol-list-container {
+  white-space: normal;
+  overflow: scroll;
+  height: 400px;
+  /*border: 1px solid red;*/
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+.symbol-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 10px;
+}
+
+.symbol-list-item {
+  cursor: pointer;
+}
+
+.symbol-name {
+  flex: 1;
+}
+
+.symbol-current-price {
+  flex: 1;
+  text-align: right;
+}
+
+.symbol-select {
+  color: #54ceed;
+}

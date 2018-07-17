@@ -1,12 +1,12 @@
 <div class="container">
   <div class="row row-padding-top">
     <div class="col">
-      <TradingHallHeader/>
+      <TradingHallHeader :symbolList="symbolList"/>
     </div>
   </div>
   <div class="row row-padding-top">
     <div class="col-3">
-      <TradingHallDepth/>
+      <TradingHallDepth :depthData="depthData" :symbolList="symbolList"/>
     </div>
     <div class="col-6">
       <TradingHallMining/>
@@ -21,7 +21,7 @@
           </b-card-header>
           <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
             <b-card-body>
-              <TradeHallMarket/>
+              <TradeHallMarket :marketList="marketList" :symbolList="symbolList"/>
             </b-card-body>
           </b-collapse>
         </b-card>

@@ -1,6 +1,26 @@
-<div>
-  <Loading/>
-  <div v-for="(item,index) in marketList">
-    {{item}}
+<div class="market-container">
+  <!--<Loading/>-->
+  <div class="nav-container">
+    <div v-for="(item,index) in marketList" :key="index" class="nav-item"
+         :class="{'active-nav-item':computedSelectMarket==item}"
+         @click="changeSelectMarket(item)"
+    >{{item}}
+    </div>
+  </div>
+
+  <div class="symbol-list">
+    <div class="symbol-name">名称</div>
+    <div class="symbol-current-price">时价</div>
+  </div>
+
+  <div class="symbol-list-container ">
+    <div class="symbol-list-item symbol-list"
+         v-for="(item,index) in computedSymbolList"
+         :class="{'symbol-select':symbol===item.name}"
+         @click="selectSymbol(item.name)"
+    >
+      <div class="symbol-name"> {{item.name | symbolName}}</div>
+      <div class="symbol-current-price">{{toFixed(item.currentPrice,8)}}</div>
+    </div>
   </div>
 </div>
