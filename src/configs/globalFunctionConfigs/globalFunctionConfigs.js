@@ -39,4 +39,33 @@ func.accFixed = function (num, acc) {
 }
 
 
+//格式化时间年-月-日  时：分：秒
+func.formatDateUitl = function (time, formatString, offset = 8) {
+
+  var pad0 = function (num, n) {
+    var len = num.toString().length;
+    while (len < n) {
+      num = "0" + num;
+      len++;
+    }
+    return num;
+  }
+
+  // time += (3600000 * offset)
+
+  var myDate = new Date(time);
+
+  formatString = formatString.replace('yy', myDate.getYear())
+  console.log()
+  formatString = formatString.replace('YYYY', myDate.getFullYear())
+  formatString = formatString.replace('MM', pad0(myDate.getMonth() + 1, 2))
+  formatString = formatString.replace('DD', pad0(myDate.getDate(), 2))
+  formatString = formatString.replace('hh', pad0(myDate.getHours(), 2))
+  formatString = formatString.replace('mm', pad0(myDate.getMinutes(), 2))
+  formatString = formatString.replace('ss', pad0(myDate.getSeconds(), 2))
+
+  return formatString;
+}
+
+
 export default func

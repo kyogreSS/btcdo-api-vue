@@ -18,6 +18,15 @@ root.data = function () {
     marketList: [],
     symbolList: [],
     depthData: {},
+    symbolMap: new Map(),
+    symbolMapChange: 1,
+    marketListSet: new Set(),
+    marketListSetChange: 1,
+    symbolObj: {},
+    symbolObjChange: 1,
+    priceObj: {},
+    priceObjChange: 1,
+    topic_tick: [],
   }
 }
 
@@ -35,6 +44,7 @@ root.created = function () {
 /*---------------------------- 计算 ----------------------------*/
 
 root.computed = {}
+
 root.computed.apiKey = function () {
   return this.$store.state.apiKey
 }
@@ -42,65 +52,26 @@ root.computed.secretKey = function () {
   return this.$store.state.secretKey
 }
 
-// 币种处理数据
-root.computed.symbolMap = function () {
-  return this.$store.state.symbolMap
-}
-root.computed.symbolMapChange = function () {
-  return this.$store.state.symbolMapChange
-}
-// 市场列表处理数据
-root.computed.marketListSet = function () {
-  return this.$store.state.marketListSet
-}
-root.computed.marketListSetChange = function () {
-  return this.$store.state.marketListSetChange
-}
-
-// 币种原始数据
-root.computed.symbolObj = function () {
-  return this.$store.state.symbolObj
-}
-
-root.computed.symbolObjChange = function () {
-  return this.$store.state.symbolChange
-}
-
-
-// 价格原始数据
-root.computed.priceObj = function () {
-  return this.$store.state.priceObj
-}
-root.computed.priceObjChange = function () {
-  return this.$store.state.priceChange
-}
 
 // 选择的币对
 root.computed.symbol = function () {
   return this.$store.state.symbol
 }
 
-// 深度图
-root.computed.storeDepthData = function () {
-  return this.$store.state.depthData
-}
-// 深度图变化
-root.computed.depthDataChange = function () {
-  return this.$store.state.depthDataChange
-}
 
 root.watch = {}
+
 root.watch.symbolObjChange = function (newVal, oldVal) {
   this.symbolObj && this.symbolObj.symbols && this.symbolObj.symbols.forEach(v => {
-    this.$store.commit('setMarketList', v.quoteName)
-    this.$store.commit('setSymbolMap', v)
+    this.setMarketList(v.quoteName)
+    this.setSymbolMap(v)
   })
 }
 
 root.watch.priceObjChange = function (newVal, oldVal) {
   Object.keys(this.priceObj).forEach(v => {
-    this.$store.commit('setMarketList', v.split('_')[1])
-    this.$store.commit('setSymbolMap', {
+    this.setMarketList(v.split('_')[1])
+    this.setSymbolMap({
       name: v,
       currentPrice: this.priceObj[v][4],
       volume: this.priceObj[v][5],
@@ -126,7 +97,6 @@ root.watch.symbol = function (newVal, oldVal) {
 }
 
 
-
 /*---------------------------- 方法 ----------------------------*/
 root.methods = {}
 root.methods.init = async function () {
@@ -141,8 +111,9 @@ root.methods.init = async function () {
 root.methods.initSymbols = function () {
   return this.$api.getSymbols().then(({data}) => {
     typeof data === 'string' && (data = JSON.parse(data))
-    this.$store.commit('changeSymbolObj', data)
-    console.warn('this is symbol', data)
+    this.symbolObj = Object.assign(this.symbolObj, data)
+    this.symbolObjChange++
+    if (this.symbolObjChange > 100) this.symbolObjChange = 1
   }).catch(err => {
 
   })
@@ -151,8 +122,11 @@ root.methods.initSymbols = function () {
 root.methods.initPrice = function () {
   return this.$api.getAllSymbolTransactionInfo().then(({data}) => {
     typeof data === 'string' && (data = JSON.parse(data))
-    this.$store.commit('changePriceObj', data)
+    this.priceObj = Object.assign(this.priceObj, data)
+    this.priceObjChange++
+    if (this.priceObjChange > 100) this.priceObjChange = 1
   }).catch(err => {
+
   })
 }
 
@@ -160,10 +134,6 @@ root.methods.initPrice = function () {
 root.methods.initDepthData = function () {
   return this.$api.getSpecifiedTradeDepth(this.symbol).then(({data}) => {
     typeof data === 'string' && (data = JSON.parse(data))
-    this.$store.commit('changeDepthData', data)
-    this.$store.commit('setBuyOrders', data.buyOrders)
-    this.$store.commit('setSaleOrders', data.saleOrders)
-    // console.warn('this is data', data)
     this.depthData = data
   }).catch(err => {
 
@@ -180,15 +150,23 @@ root.methods.initSocket = function (newSymbol, oldSymbol) {
 
   // 接收所有币对实时价格
   this.$socket.on({
-    key: 'topic_prices', bind: this, callBack: (message) => {
-      this.$store.commit('changePriceObj', message)
+    key: 'topic_prices', bind: this, callBack: (data) => {
+      this.priceObj = Object.assign(this.priceObj, data)
+      this.priceObjChange++
+      if (this.priceObjChange > 100) this.priceObjChange = 1
     }
   })
 
   // 获取所有币对价格
   this.$socket.on({
     key: 'topic_tick', bind: this, callBack: (message) => {
-      this.$store.commit('setSymbolMap', {name: message.symbol, currentPrice: message.price})
+      if (message instanceof Array) {
+        this.setSymbolMap({name: message[0].symbol, currentPrice: message[0].price})
+        this.topic_tick = message
+        return
+      }
+      this.setSymbolMap({name: message.symbol, currentPrice: message.price})
+      this.topic_tick.unshift(message)
     }
   })
 
@@ -196,16 +174,45 @@ root.methods.initSocket = function (newSymbol, oldSymbol) {
   this.$socket.on({
     key: 'topic_snapshot', bind: this, callBack: (data) => {
       typeof data === 'string' && (data = JSON.parse(data))
-      this.$store.commit('changeDepthData', data)
       this.depthData = data
-      // this.$store.commit('setBuyOrders', data.buyOrders)
-      // this.$store.commit('setSaleOrders', data.saleOrders)
     }
   })
-
 }
 
 
+// symbolMap修改
+root.methods.setSymbolMap = function (info) {
+  let name = info.name
+  if (!name) return
+  let symbolObj = this.symbolMap.get(name)
+  !symbolObj && this.symbolMap.set(name, symbolObj = {})
+  symbolObj.name = name || symbolObj.name // 币种名称
+  symbolObj.startTime = info.startTime || symbolObj.startTime // 开放时间
+  symbolObj.endTime = info.endTime || symbolObj.endTime // 结束时间
+  symbolObj.quoteMinimum = info.quoteMinimum || symbolObj.quoteMinimum // 最小精度
+  symbolObj.quoteScale = info.quoteScale || symbolObj.quoteScale // 最小精度
+  symbolObj.baseScale = info.baseScale || symbolObj.baseScale // 最小精度
+  symbolObj.baseMinimum = info.baseMinimum || symbolObj.baseMinimum // 深度
+  symbolObj.currentPrice = info.currentPrice || symbolObj.currentPrice // 时价
+  symbolObj.volume = info.volume || symbolObj.volume // 成交量
+  symbolObj.riseAndFall = info.riseAndFall || symbolObj.riseAndFall // 涨跌幅
+  symbolObj.highestPrice = info.highestPrice || symbolObj.highestPrice // 最高价
+  symbolObj.minimumPrice = info.minimumPrice || symbolObj.minimumPrice //最低价
+  this.symbolMapChange++
+  if (this.symbolMapChange > 100) this.symbolMapChange = 1
+}
+
+
+// 设置市场信息
+root.methods.setMarketList = function (info) {
+  if (!info) return
+  this.marketListSet.add(info)
+
+  this.marketListSetChange++
+  if (this.marketListSetChange > 100) this.marketListSetChange = 1
+}
+
+// 等待
 root.methods.sleep = function (time) {
   return this.$api.sleep(time)
 }

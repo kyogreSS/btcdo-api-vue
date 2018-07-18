@@ -1,1 +1,16 @@
-<div></div>
+<div class="deal-container">
+  <div class="deal-title flex">
+    <div class="price">成交价</div>
+    <div class="amount">数量</div>
+    <div class="time">时间</div>
+  </div>
+  <div class="item-container">
+    <div class="deal-item flex" v-for="(item,index) in topic_tick.slice(0,20)">
+      <div class="price">{{toFixed(item.price,8)}}</div>
+      <div class="amount">{{item.amount}}</div>
+      <div class="time">{{formatDateUitl(item.createdAt)}}</div>
+    </div>
+  </div>
+
+
+</div>

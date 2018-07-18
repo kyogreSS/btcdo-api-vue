@@ -2,7 +2,14 @@
   <b-btn v-b-toggle.collapse2 variant="primary">单笔交易</b-btn>
   <b-collapse id="collapse2" class="mt-2">
     <b-card>
-
+      <b-tabs pills card vertical>
+        <b-tab title="买入" active>
+          <TradeForHandOperationDetail type="buy"/>
+        </b-tab>
+        <b-tab title="卖出">
+          <TradeForHandOperationDetail type="sale"/>
+        </b-tab>
+      </b-tabs>
     </b-card>
   </b-collapse>
 </div>

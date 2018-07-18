@@ -1,1 +1,24 @@
-<div></div>
+<div class="account-container">
+  <div v-for="(item,index) in currency" class="currency-item">
+    <div class="currency flex">
+      <div class="left">币种</div>
+      <div class="right"
+           :class="{'select-currency':item.currency===symbolOne || item.currency===symbolTwo}"
+      >{{item.currency}}
+      </div>
+    </div>
+    <div class="available flex">
+      <div class="left">可用</div>
+      <div class="right">{{toFixed(item.available,8)}}</div>
+    </div>
+    <div class="frozen flex">
+      <div class="left">冻结</div>
+      <div class="right">{{toFixed(item.frozen,8)}}</div>
+    </div>
+    <div class="total flex">
+      <div class="left">总额</div>
+      <div class="right">{{toFixed(item.total,8)}}</div>
+    </div>
+  </div>
+
+</div>
