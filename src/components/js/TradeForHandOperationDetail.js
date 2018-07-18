@@ -21,6 +21,7 @@ root.data = function () {
     price: '',
     amount: '',
     range: 0,
+    fireBDB: 'true',
   }
 }
 
@@ -42,6 +43,10 @@ root.computed.secretKey = function () {
 }
 root.computed.isLogin = function () {
   return this.$store.state.apiKey && this.$store.state.secretKey
+}
+
+root.computed.symbol = function () {
+  return this.$store.state.symbol
 }
 root.computed.symbolOne = function () {
   return this.$store.state.symbol.split('_')[0]
@@ -79,6 +84,22 @@ root.methods.inputAmount = function () {
   }
   if (this.type === 'buy') {
     this.range = this.toFixed(Math.min(this.$globalFunc.accDiv(this.amount, this.$globalFunc.accDiv(this.symbolTwoAvailable, this.price || 1)), 1) * 100, 0)
+  }
+}
+
+root.methods.commit = function () {
+  if (!this.amount || !this.price) return
+  if (this.type === 'sale') {
+    this.$api.createSaleOrder(this.price, this.amount, this.symbol, this.fireBDB, {
+      apiKey: this.apiKey,
+      secretKey: this.secretKey
+    })
+  }
+  if (this.type === 'buy') {
+    this.$api.createBuyOrder(this.price, this.amount, this.symbol, this.fireBDB, {
+      apiKey: this.apiKey,
+      secretKey: this.secretKey
+    })
   }
 }
 

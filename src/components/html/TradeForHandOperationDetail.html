@@ -29,6 +29,16 @@
     </b-col>
   </b-row>
 
+  <b-row class="my-4">
+    <b-form-checkbox id="fireBDB"
+                     v-model="fireBDB"
+                     value='true'
+                     unchecked-value='false'
+    >
+      使用BDB燃烧
+    </b-form-checkbox>
+  </b-row>
+
   <template v-if="isLogin">
     <div class="available-container">
       <div class="left">{{symbolOne}}可用：{{toFixed(symbolOneAvailable,8)}} {{symbolOne}}</div>
@@ -36,8 +46,8 @@
     </div>
 
     <div class="button-container">
-      <b-button variant="success" v-if="type==='buy'">买入{{symbolOne}}</b-button>
-      <b-button variant="danger" v-if="type==='sale'">卖出{{symbolOne}}</b-button>
+      <b-button variant="success" v-if="type==='buy'" @click="commit">买入{{symbolOne}}</b-button>
+      <b-button variant="danger" v-if="type==='sale'" @click="commit">卖出{{symbolOne}}</b-button>
     </div>
   </template>
 
