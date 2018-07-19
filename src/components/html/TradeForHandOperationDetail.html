@@ -1,4 +1,11 @@
 <div>
+  <b-alert :show="dismissCountDown"
+           dismissible
+           :variant="variant"
+           @dismissed="dismissCountDown=0"
+           @dismiss-count-down="countDownChanged">
+    {{message}}
+  </b-alert>
   <b-row class="my-1">
     <b-col sm="3"><label for="input-price">价格：</label></b-col>
     <b-col sm="9">
@@ -45,9 +52,13 @@
       <div class="right">{{symbolTwo}}可用：{{toFixed(symbolTwoAvailable,8)}} {{symbolTwo}}</div>
     </div>
 
-    <div class="button-container">
+    <div class="button-container" v-show="!committing">
       <b-button variant="success" v-if="type==='buy'" @click="commit">买入{{symbolOne}}</b-button>
       <b-button variant="danger" v-if="type==='sale'" @click="commit">卖出{{symbolOne}}</b-button>
+    </div>
+    <div class="button-container" v-show="committing">
+      <b-button variant="success" v-if="type==='buy'">买入中</b-button>
+      <b-button variant="danger" v-if="type==='sale'">卖出中</b-button>
     </div>
   </template>
 

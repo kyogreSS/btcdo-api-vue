@@ -22,6 +22,11 @@ root.data = function () {
     amount: '',
     range: 0,
     fireBDB: 'true',
+    dismissSecs: 2,
+    dismissCountDown: 0,
+    message: '',
+    variant: 'primary',
+    committing: false,
   }
 }
 
@@ -79,6 +84,10 @@ root.methods.inputRange = function () {
 }
 
 root.methods.inputAmount = function () {
+  if (this.amount === '') {
+    this.range = 0
+    return
+  }
   if (this.type === 'sale') {
     this.range = this.toFixed(Math.min(this.$globalFunc.accDiv(this.amount, this.symbolOneAvailable), 1) * 100, 0)
   }
@@ -88,19 +97,66 @@ root.methods.inputAmount = function () {
 }
 
 root.methods.commit = function () {
-  if (!this.amount || !this.price) return
-  if (this.type === 'sale') {
-    this.$api.createSaleOrder(this.price, this.amount, this.symbol, this.fireBDB, {
-      apiKey: this.apiKey,
-      secretKey: this.secretKey
-    })
+  if (this.committing) return
+  if (!this.amount || !this.price) {
+    this.message = '请输入价格或数量'
+    this.showAlert(4)
+    return
   }
-  if (this.type === 'buy') {
-    this.$api.createBuyOrder(this.price, this.amount, this.symbol, this.fireBDB, {
-      apiKey: this.apiKey,
-      secretKey: this.secretKey
-    })
+  this.committing = true
+  let apiMethod = this.type === 'sale' ? 'createSaleOrder' : 'createBuyOrder'
+  this.$api[apiMethod](this.price, this.amount, this.symbol, this.fireBDB, {
+    apiKey: this.apiKey,
+    secretKey: this.secretKey
+  }).then(res => {
+    this.message = '挂单成功'
+    this.showAlert(3)
+    this.committing = false
+    this.$eventBus.notify({key: 'getAccounts'})
+  }).catch(err => {
+    this.message = '挂单失败'
+    this.showAlert(4)
+    this.committing = false
+  })
+
+
+}
+
+
+root.methods.countDownChanged = function (dismissCountDown) {
+  this.dismissCountDown = dismissCountDown
+}
+root.methods.showAlert = function (type) {
+  switch (type) {
+    case 1:
+      this.variant = 'primary';
+      break;
+    case 2:
+      this.variant = 'secondary';
+      break;
+    case 3:
+      this.variant = 'success';
+      break;
+    case 4:
+      this.variant = 'danger';
+      break;
+    case 5:
+      this.variant = 'warning';
+      break;
+    case 6:
+      this.variant = 'info';
+      break;
+    case 7:
+      this.variant = 'light';
+      break;
+    case 8:
+      this.variant = 'dark';
+      break;
+    default:
+      this.variant = 'primary';
   }
+
+  this.dismissCountDown = this.dismissSecs
 }
 
 
