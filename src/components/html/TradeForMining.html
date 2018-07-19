@@ -1,16 +1,22 @@
-<div class="col">
-  <b-form-group horizontal
-                :label-cols="2"
-                label="价格："
-                label-for="input_default">
-    <b-form-input id="input_price"></b-form-input>
-  </b-form-group>
-
-  <b-form-group horizontal
-                :label-cols="2"
-                label="数量："
-                label-for="input_default">
-    <b-form-input id="input_amount"></b-form-input>
-  </b-form-group>
+<div class="col mining-container">
+  <b-btn v-b-toggle.auto-mining variant="primary">自动挖矿</b-btn>
+  <b-collapse id="auto-mining" class="mt-2" visible>
+    <b-card>
+      <b-row class="my-1">
+        <b-col sm="3"><label for="input-api-key">api key:</label></b-col>
+        <b-col sm="9">
+          <b-form-input id="input-api-key" type="password" placeholder="Enter your api key"
+                        v-model="apiKey"></b-form-input>
+        </b-col>
+      </b-row>
+      <b-row class="my-2">
+        <b-col sm="3"><label for="input-secret-key">secret key:</label></b-col>
+        <b-col sm="9">
+          <b-form-input id="input-secret-key" type="password" placeholder="Enter your secret key"
+                        v-model="secretKey"></b-form-input>
+        </b-col>
+      </b-row>
+    </b-card>
+  </b-collapse>
 
 </div>
