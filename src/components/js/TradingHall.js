@@ -10,6 +10,7 @@ root.components = {
   'TradeHallMarket': resolve => require(['../vue/TradeHallMarket'], resolve),
   'TradeHallAccounts': resolve => require(['../vue/TradeHallAccounts'], resolve),
   'TradeHallLatestDeal': resolve => require(['../vue/TradeHallLatestDeal'], resolve),
+  'CurrentOrder': resolve => require(['../vue/CurrentOrder'], resolve),
 }
 
 /*---------------------------- 数据 ----------------------------*/
