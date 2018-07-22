@@ -1,6 +1,6 @@
 const root = {}
-root.name = 'TradingHallDepth'
 
+root.name = 'TradeHallMarket'
 
 /*---------------------------- 组件 ----------------------------*/
 
@@ -10,8 +10,8 @@ root.components = {
 /*---------------------------- props ----------------------------*/
 root.props = {}
 
-root.props.depthData = {
-  type: Object,
+root.props.marketList = {
+  type: Array,
   required: true
 }
 
@@ -20,11 +20,12 @@ root.props.symbolList = {
   required: true
 }
 
-
 /*---------------------------- 数据 ----------------------------*/
 
 root.data = function () {
-  return {}
+  return {
+    selectMarket: ''
+  }
 }
 
 /*---------------------------- 生命周期 ----------------------------*/
@@ -36,46 +37,49 @@ root.created = function () {
 /*---------------------------- 计算 ----------------------------*/
 
 root.computed = {}
+root.computed.apiKey = function () {
+  return this.$store.state.apiKey
+}
+root.computed.secretKey = function () {
+  return this.$store.state.secretKey
+}
+root.computed.computedSelectMarket = function () {
+  return this.selectMarket || this.marketList[0]
+}
+root.computed.computedSymbolList = function () {
+  return this.symbolList.filter(value => {
+    if (value.name.split('_')[1] === this.computedSelectMarket)
+      return value
+  })
+}
+
 // 选择币对
 root.computed.symbol = function () {
   return this.$store.state.symbol
 }
 
-// 卖单
-root.computed.buyOrder = function () {
-  return this.depthData.buyOrders && this.depthData.buyOrders.slice(0, 12)
-}
-
-// 买单
-root.computed.saleOrder = function () {
-  return this.depthData.sellOrders && this.depthData.sellOrders.slice(0, 12)
-}
-
-
-// 深度
-root.computed.deep = function () {
-  let ans = {}
-  this.symbolList.forEach(v => {
-    if (v.name === this.symbol) {
-      ans = v
-    }
-  })
-  return this.$globalFunc.accMul(ans.baseMinimum || 0, 100000)
-}
+/*---------------------------- 监听 ----------------------------*/
+root.watch = {}
 
 
 /*---------------------------- 方法 ----------------------------*/
 
 root.methods = {}
+root.methods.init = function () {
 
-// 深度计算
-root.methods.computedDeep = function (amount) {
-
-  return Math.max(100 - Math.min(this.toFixed(this.$globalFunc.accDiv(amount, this.deep || 100000) || 100, 4) * 100), 0) || 0
+}
+root.methods.changeSelectMarket = function (market) {
+  this.selectMarket = market
 }
 
 root.methods.toFixed = function (num, acc = 8) {
   return this.$globalFunc.accFixed(num, acc)
+}
+
+root.methods.selectSymbol = function (symbol) {
+  this.$store.commit('setSymbol', symbol)
+  this.$cookies.set('user_symbol_cookie', symbol, 60 * 60 * 24);
+
 }
 
 export default root

@@ -1,0 +1,70 @@
+<div>
+  <b-alert :show="dismissCountDown"
+           dismissible
+           :variant="variant"
+           @dismissed="dismissCountDown=0"
+           @dismiss-count-down="countDownChanged">
+    {{message}}
+  </b-alert>
+  <b-row class="my-1">
+    <b-col sm="3"><label for="input-price">价格：</label></b-col>
+    <b-col sm="9">
+      <b-form-input id="input-price" type="number" placeholder="Enter price"
+                    v-model="price">
+
+      </b-form-input>
+    </b-col>
+  </b-row>
+  <b-row class="my-2">
+    <b-col sm="3"><label for="input-amount">数量：</label></b-col>
+    <b-col sm="9">
+      <b-form-input id="input-amount" type="number" placeholder="Enter amount"
+                    v-model="amount"
+                    @change="inputAmount"
+      >
+      </b-form-input>
+    </b-col>
+  </b-row>
+  <b-row class="my-3">
+    <b-col sm="3">
+      {{range}}%
+    </b-col>
+    <b-col sm="9">
+      <b-form-input id="input-range" type="range"
+                    v-model="range" @change="inputRange">
+      </b-form-input>
+    </b-col>
+  </b-row>
+
+  <b-row class="my-4">
+    <b-form-checkbox id="fireBDB"
+                     v-model="fireBDB"
+                     value='true'
+                     unchecked-value='false'
+    >
+      使用BDB燃烧
+    </b-form-checkbox>
+  </b-row>
+
+  <template v-if="isLogin">
+    <div class="available-container">
+      <div class="left">{{symbolOne}}可用：{{toFixed(symbolOneAvailable,8)}} {{symbolOne}}</div>
+      <div class="right">{{symbolTwo}}可用：{{toFixed(symbolTwoAvailable,8)}} {{symbolTwo}}</div>
+    </div>
+
+    <div class="button-container" v-show="!committing">
+      <b-button variant="success" v-if="type==='buy'" @click="commit">买入{{symbolOne}}</b-button>
+      <b-button variant="danger" v-if="type==='sale'" @click="commit">卖出{{symbolOne}}</b-button>
+    </div>
+    <div class="button-container" v-show="committing">
+      <b-button variant="success" v-if="type==='buy'">买入中</b-button>
+      <b-button variant="danger" v-if="type==='sale'">卖出中</b-button>
+    </div>
+  </template>
+
+  <template v-else>
+    <div class="button-container">
+      <b-button variant="success">请先输入API KEY</b-button>
+    </div>
+  </template>
+</div>

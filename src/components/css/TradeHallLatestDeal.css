@@ -1,0 +1,39 @@
+.deal-container {
+
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+.item-container {
+  max-height: 434px;
+  overflow-y: scroll;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.deal-item {
+  font-size: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.price {
+  flex: 1;
+}
+
+.amount {
+  flex: 1;
+  text-align: right;
+}
+
+.time {
+  flex: 1;
+  text-align: right;
+}

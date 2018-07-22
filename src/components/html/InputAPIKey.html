@@ -1,0 +1,21 @@
+<div class="col login-in">
+  <b-btn v-b-toggle.collapse1 variant="primary">{{inputAlready}}</b-btn>
+  <b-collapse id="collapse1" class="mt-2" visible>
+    <b-card>
+      <b-row class="my-1">
+        <b-col sm="3"><label for="input-api-key">api key:</label></b-col>
+        <b-col sm="9">
+          <b-form-input id="input-api-key" type="password" placeholder="Enter your api key"
+                        v-model="apiKey"></b-form-input>
+        </b-col>
+      </b-row>
+      <b-row class="my-2">
+        <b-col sm="3"><label for="input-secret-key">secret key:</label></b-col>
+        <b-col sm="9">
+          <b-form-input id="input-secret-key" type="password" placeholder="Enter your secret key"
+                        v-model="secretKey"></b-form-input>
+        </b-col>
+      </b-row>
+    </b-card>
+  </b-collapse>
+</div>

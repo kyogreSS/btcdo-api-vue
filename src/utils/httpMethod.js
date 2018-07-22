@@ -6,7 +6,7 @@ import querystring from 'querystring'
 import Address from '../configs/networkConfigs/address'
 import env from '../configs/env/env'
 
-export default function (key, {params, apiKey, secretKey, query} = {}) {
+export default function (key, {params, apiKey, secretKey, query, urlFragment} = {}) {
   let headers = {}
   // 获取时间
   let apiTime = new Date().getTime()
@@ -14,6 +14,7 @@ export default function (key, {params, apiKey, secretKey, query} = {}) {
   let apiUniqueId = uuidV1()
   // 请求的query
   let pathname = Address[key].pathname || env.basePathname
+  urlFragment && (pathname += urlFragment)
   let method = Address[key].method.toUpperCase() || env.baseMethod
   let sendQuery = querystring.stringify(query)
   let apiUrl = env.apiUrl
@@ -34,6 +35,6 @@ export default function (key, {params, apiKey, secretKey, query} = {}) {
   headers['API-KEY'] = headers['API-KEY'] || apiKey
   headers['Content-Type'] = 'application/json'
 
-  return Vue.$http.send(key, {headers, params, query: sendQuery})
+  return Vue.$http.send(key, {headers, params, query: sendQuery, urlFragment})
 
 }
